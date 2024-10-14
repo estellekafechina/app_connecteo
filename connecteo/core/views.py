@@ -1,19 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
-from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import ProfileUpdateForm, UserUpdateForm
 from .models import Profile ,Post, Comment, Message, Notification
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from .models import Profile
 from rest_framework import viewsets, permissions,filters
 from .serializers import UserSerializer, PostSerializer, CommentSerializer, MessageSerializer, NotificationSerializer
 from django.contrib.auth.models import User
+
 
 def register(request):
     if request.method == 'POST':
@@ -68,8 +64,11 @@ def profile_view(request):
     return render(request, 'core/profile.html', {'profile': profile})
 
 
+def messages_view(request):
+    return render(request, 'core/messages.html')
 
-
+def notification_view(request):
+    return render (request,'core/notifications.html')
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -103,7 +102,7 @@ class PostViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['content', 'user__username']
     ordering_fields = ['created_at', 'user']
-
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -123,3 +122,28 @@ class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all().order_by('-created_at')
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+@login_required
+def follow(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+    profile = user_to_follow.profile
+    if request.user in profile.followers.all():
+        profile.followers.remove(request.user)
+    else:
+        profile.followers.add(request.user)
+    return redirect('profile', username=username)
+
+@login_required
+def profile_view(request):
+    profile = request.user.profile
+    return render(request, 'core/profile.html', {'profile': profile})
+
+
+
+def send_message(request):
+    if request.method == 'POST':
+        # Logique pour envoyer un message
+        
+        pass
+    return redirect('messages')

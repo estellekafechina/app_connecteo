@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Notifications</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/styles.css' %}"> {% endcomment %}
+</head>
+<body>
+    <header>
+        <h1>Gestion des Notifications</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Notifications</h2>
+            <ul class="notification-list">
+                {% for notification in notifications %}
+                    <li class="notification-item">
+                        <div class="notification-content">
+                            <strong class="notification-title">{{ notification.title }}</strong>
+                            <p class="notification-message">{{ notification.message }}</p>
+                            <small class="notification-timestamp">{{ notification.timestamp }}</small>
+                        </div>
+                        <form method="post" action="{% url 'mark_as_read' notification.id %}" class="notification-form">
+                            {% csrf_token %}
+                            <button type="submit" class="mark-as-read-button">Marquer comme lu</button>
+                        </form>
+                    </li>
+                {% empty %}
+                    <li class="no-notifications">Aucune notification pour le moment.</li>
+                {% endfor %}
+            </ul>
+            <style>
+                .notification-list {
+                    list-style-type: none;
+                    padding: 0;
+                }
+                .notification-item {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border-radius: 5px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .notification-content {
+                    flex-grow: 1;
+                }
+                .notification-title {
+                    font-weight: bold;
+                }
+                .notification-message {
+                    margin: 5px 0;
+                }
+                .notification-timestamp {
+                    font-size: 0.8em;
+                    color: #666;
+                }
+                .notification-form {
+                    margin-left: 10px;
+                }
+                .mark-as-read-button {
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    padding: 5px 10px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                }
+                .mark-as-read-button:hover {
+                    background-color: #0056b3;
+                }
+                .no-notifications {
+                    text-align: center;
+                    color: #666;
+                }
+            </style>
+        </section>
+    </main>
+</body>
+</html>

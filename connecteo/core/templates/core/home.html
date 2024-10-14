@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Connecteo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,31 +16,40 @@
             background-color: #4CAF50;
             color: white;
             padding: 1rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
         .header-title {
             margin: 0;
+            font-size: 1.5rem;
         }
         .nav {
             display: flex;
-            justify-content: center;
+            align-items: center;
             gap: 1rem;
-            margin-top: 1rem;
         }
         .nav a {
             color: white;
             text-decoration: none;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem;
             border-radius: 4px;
             background-color: #333;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .nav a:hover {
             background-color: #555;
         }
+        .nav i {
+            font-size: 1.2rem;
+        }
         .main-content {
             padding: 2rem;
         }
-        .welcome-section, .info-section {
+        .welcome-section {
+            text-align: center;
             margin-bottom: 2rem;
         }
         .links {
@@ -71,19 +81,30 @@
 <body>
     <header class="header">
         <h1 class="header-title">Welcome to Connecteo</h1>
+        <nav class="nav">
+            <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Profil</a>
+            <a href="{% url 'messages' %}"><i class="fas fa-envelope"></i> Messages</a>
+            <a href="{% url 'notifications' %}"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="{% url 'logout' %}" class="btn" style="background-color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+        </nav>
     </header>
+
     <main class="main-content">
-        <section class="welcome-section" style="text-align: center;">
+        <section class="welcome-section">
             <h1>Bienvenue sur Connecteo</h1>
             <p>Ceci est la page d'accueil de votre application.</p>
             <div class="links">
-            <a class="btn" href="{% url 'register' %}">S'inscrire</a>
-            <a class="btn" href="{% url 'profile' %}">Mon Profil</a>
+                <a class="btn" href="{% url 'register' %}">S'inscrire</a>
+                <a class="btn" href="{% url 'profile' %}">Mon Profil</a>
             </div>
         </section>
     </main>
+
     <footer class="footer">
         <p>&copy; 2024 Connecteo. All rights reserved.</p>
     </footer>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </body>
 </html>

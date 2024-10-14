@@ -16,6 +16,11 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='core/login.html')), 
+    path('messages/', views.messages_view, name='messages'),
+    path('notifications/', views.notification_view, name='notifications'),
+    path('send_message/', views.send_message, name='send_message'),
+    
+
 ]
 
 
@@ -30,4 +35,6 @@ urlpatterns += router.urls
 urlpatterns += [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('follow/<str:username>/', views.follow, name='follow'),
+
 ]

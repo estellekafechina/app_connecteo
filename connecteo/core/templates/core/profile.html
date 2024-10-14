@@ -4,24 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
-    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #0095f6;
+        }
+        .profile-info {
+            flex-grow: 1;
+            margin-left: 20px;
+        }
+        .profile-info h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #222;
+        }
+        .profile-info p {
+            margin: 8px 0;
+            color: #666;
+        }
+        .edit-profile-btn {
+            padding: 8px 15px;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            background-color: #f9f9f9;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .edit-profile-btn:hover {
+            background-color: #f0f0f0;
+        }
+        .create-post-btn {
+            padding: 10px 20px;
+            background-color: #0095f6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .create-post-btn:hover {
+            background-color: #0077cc;
+        }
+        .posts {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+            justify-content: center;
+        }
+        .post {
+            width: 30%;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .post:hover {
+            transform: translateY(-5px);
+        }
+        .post img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        @media (max-width: 768px) {
+            .post {
+                width: 45%;
+            }
+            .profile-header {
+                flex-direction: column;
+                align-items: center;
+            }
+            .profile-info {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+        @media (max-width: 480px) {
+            .post {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Profile Page</h1>
-    </header>
-    <main>
-        <section>
-            <h1>Profil de {{ profile.user.username }}</h1>
-            <img src="{{ profile.profile_image.url }}" alt="Image de profil">
-            <p>Bio : {{ profile.bio }}</p>
-            <p>Email : {{ profile.user.email }}</p>
-            <p>Liens : <a href="{{ profile.social_links }}">{{ profile.social_links }}</a></p>
-            <a href="{% url 'profile_update' %}">Modifier le profil</a>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 Your Company</p>
-    </footer>
+    <div class="profile-header">
+        <img src="profile-pic.jpg" alt="Profile Picture">
+        <div class="profile-info">
+            <h1>Username</h1>
+            <p>Bio goes here... Passionate about design, tech, and photography.</p>
+            <button class="edit-profile-btn">Edit Profile</button>
+        </div>
+        <button class="create-post-btn">Create Post</button>
+    </div>
+
+    <div class="posts">
+        <div class="post">
+            <img src="post1.jpg" alt="Post Image">
+        </div>
+        <div class="post">
+            <img src="post2.jpg" alt="Post Image">
+        </div>
+        <div class="post">
+            <img src="post3.jpg" alt="Post Image">
+        </div>
+        <!-- Add more posts as needed -->
+    </div>
 </body>
 </html>
