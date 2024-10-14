@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+</head>
+<body>
+    <header>
+        <h1>Profile Page</h1>
+    </header>
+    <main>
+        <section>
+            <h1>Profil de {{ profile.user.username }}</h1>
+            <img src="{{ profile.profile_image.url }}" alt="Image de profil">
+            <p>Bio : {{ profile.bio }}</p>
+            <p>Email : {{ profile.user.email }}</p>
+            <p>Liens : <a href="{{ profile.social_links }}">{{ profile.social_links }}</a></p>
+            <a href="{% url 'profile_update' %}">Modifier le profil</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Your Company</p>
+    </footer>
+</body>
+</html>

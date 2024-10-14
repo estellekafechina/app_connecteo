@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Connecteo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .header-title {
+            margin: 0;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background-color: #333;
+        }
+        .nav a:hover {
+            background-color: #555;
+        }
+        .main-content {
+            padding: 2rem;
+        }
+        .welcome-section, .info-section {
+            margin-bottom: 2rem;
+        }
+        .links {
+            margin-top: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Welcome to Connecteo</h1>
+    </header>
+    <main class="main-content">
+        <section class="welcome-section" style="text-align: center;">
+            <h1>Bienvenue sur Connecteo</h1>
+            <p>Ceci est la page d'accueil de votre application.</p>
+            <div class="links">
+            <a class="btn" href="{% url 'register' %}">S'inscrire</a>
+            <a class="btn" href="{% url 'profile' %}">Mon Profil</a>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 Connecteo. All rights reserved.</p>
+    </footer>
+</body>
+</html>
