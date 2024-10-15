@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 from rest_framework import viewsets, permissions,filters
 from .serializers import UserSerializer, PostSerializer, CommentSerializer, MessageSerializer, NotificationSerializer
 from django.contrib.auth.models import User
+from .models import Message
+from .forms import MessageForm
 
 
 def register(request):
@@ -36,6 +38,8 @@ def profile_update(request):
         profile_form = ProfileUpdateForm(instance=request.user.profile)
     return render(request, 'core/profile_update.html', {'user_form': user_form, 'profile_form': profile_form})
 
+
+
 @login_required
 def create_post(request):
     if request.method == 'POST':
@@ -60,8 +64,9 @@ def home(request):
 
 @login_required
 def profile_view(request):
-    profile = Profile.objects.get(user=request.user)
-    return render(request, 'core/profile.html', {'profile': profile})
+    user = request.user
+    posts = Post.objects.filter(author=user).order_by('-created_at')
+    return render(request, 'core/profile.html', {'user': user, 'posts': posts})
 
 
 def messages_view(request):
@@ -141,9 +146,25 @@ def profile_view(request):
 
 
 
+@login_required
 def send_message(request):
     if request.method == 'POST':
-        # Logique pour envoyer un message
-        
-        pass
-    return redirect('messages')
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.sender = request.user
+            message.save()
+            message.success(request, 'Votre message a été envoyé avec succès.')
+            return redirect('messages')
+        else:
+            message.error(request, 'Il y a eu une erreur dans l"envoi de votre message. Veuillez vérifier les champs.')
+    else:
+        form = MessageForm()
+    
+    return render(request, 'messages.html', {'form': form})
+
+
+
+def home_view(request):
+    latest_posts = Post.objects.order_by('-created_at')[:5]  # Récupère les 5 derniers posts
+    return render(request, 'home.html', {'latest_posts': latest_posts})

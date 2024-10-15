@@ -19,22 +19,15 @@ urlpatterns = [
     path('messages/', views.messages_view, name='messages'),
     path('notifications/', views.notification_view, name='notifications'),
     path('send_message/', views.send_message, name='send_message'),
-    
-
-]
-
-
-router = DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'posts', PostViewSet)
-router.register(r'comments', CommentViewSet)
-router.register(r'messages', MessageViewSet)
-
-
-urlpatterns += router.urls
-urlpatterns += [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('follow/<str:username>/', views.follow, name='follow'),
 
 ]
+router = DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'posts', PostViewSet)
+router.register(r'comments', CommentViewSet)
+router.register(r'messages', MessageViewSet)
+urlpatterns += router.urls
+

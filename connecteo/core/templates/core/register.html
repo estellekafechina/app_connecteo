@@ -35,15 +35,15 @@
             margin-bottom: 5px;
         }
         .form-group input {
-            width: 100%;
+            width: 90%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         .form-group button {
-            width: 100%;
+            width: 95%;
             padding: 10px;
-            background-color: #28a745;
+            background-color: #5a9bd6;
             border: none;
             border-radius: 5px;
             color: #fff;
@@ -51,34 +51,19 @@
             cursor: pointer;
         }
         .form-group button:hover {
-            background-color: #218838;
+            background-color: #87CEFA;
         }
-        .form-group .social-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        .form-group .social-buttons a {
-            width: 48%;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            color: #fff;
+        a {
+            margin-top: 10px;
+            color: #0077cc;
             text-decoration: none;
         }
-        {% comment %} .form-group .social-buttons a.facebook {
-            background-color: #3b5998;
-        }
-        .form-group .social-buttons a.google {
-            background-color: #db4437;
-        }
-        .form-group .social-buttons a:hover {
-            opacity: 0.9;
-        } {% endcomment %}
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Register</h2>
+        <h2>INSCRIPTION</h2>
         <form method="post">
             {% csrf_token %}
             <div class="form-group">
@@ -98,7 +83,7 @@
                 <input type="password" id="password2" name="password2" required>
             </div>
             <div class="form-group">
-                <button type="submit">Register</button>
+                <button type="submit">S'INSCRIRE</button>
             </div>
             <p>Déjà inscrit ? <a href="{% url 'login' %}">Se connecter</a></p>
         </form>
