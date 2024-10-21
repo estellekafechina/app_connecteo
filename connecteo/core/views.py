@@ -49,6 +49,7 @@ def create_post(request):
         return redirect('home')
     return render(request, 'core/create_post.html')
 
+@login_required
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = post.comments.all()
@@ -59,8 +60,9 @@ def post_detail(request, post_id):
     return render(request, 'core/post_detail.html', {'post': post, 'comments': comments})
 
 
+@login_required
 def home(request):
-    return render(request, 'core/home.html')
+    return render(request, 'core/home.html', {'user': request.user})
 
 @login_required
 def profile_view(request):
@@ -69,9 +71,12 @@ def profile_view(request):
     return render(request, 'core/profile.html', {'user': user, 'posts': posts})
 
 
+
+@login_required
 def messages_view(request):
     return render(request, 'core/messages.html')
 
+@login_required
 def notification_view(request):
     return render (request,'core/notifications.html')
 
@@ -164,7 +169,7 @@ def send_message(request):
     return render(request, 'messages.html', {'form': form})
 
 
-
+@login_required
 def home_view(request):
     latest_posts = Post.objects.order_by('-created_at')[:5]  # Récupère les 5 derniers posts
-    return render(request, 'home.html', {'latest_posts': latest_posts})
+    return render(request, 'core/home.html', {'latest_posts': latest_posts})
