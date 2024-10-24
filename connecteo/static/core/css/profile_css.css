@@ -117,7 +117,7 @@ body {
 
 
 .edit-profile-btn {
-    color: #666; 
+    color: #6baddf; 
     text-decoration: none; 
     display: flex; 
     align-items: center; 
@@ -130,7 +130,7 @@ body {
 }
 
 .edit-profile-btn:hover {
-    background-color: #f0f0f0; 
+    background-color: #5ecaee; 
     color: #333; 
 }
 
