@@ -1,80 +1,90 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Messages</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        .messages {
-            margin-bottom: 20px;
-        }
-        .message {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        .message p {
-            margin: 0;
-        }
-        .message .timestamp {
-            font-size: 0.8em;
-            color: #999;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        textarea {
-            resize: vertical;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            padding: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Messages - Connecteo</title>
+    <link rel="stylesheet" href="{% static 'core/css/messages.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Messages</h1>
-        <div class="messages">
-            {% for message in messages %}
-                <div class="message">
-                    <p><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
-                    <span class="timestamp">{{ message.timestamp }}</span>
-                </div>
-            {% endfor %}
-        </div>
-        <form method="post" action="{% url 'send_message' %}">
-            {% csrf_token %}
-            <textarea name="message" placeholder="Écrire un message..."></textarea>
-            <button type="submit">Envoyer</button>
-        </form>
+    <div class="header">
+        <h1 class="header-title">Messages</h1>
+        
     </div>
+
+    <div class="messages-container">
+        <!-- Liste des Conversations -->
+        <div class="conversations">
+            <h2>Conversations</h2>
+            <ul>
+                {% for conversation in conversations %}
+                    <li>
+                        <a href="?user={{ conversation.username }}">{{ conversation.username }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="search-container">
+            <form method="get" action="{% url 'search_users' %}">
+                <input type="text" name="q" value="{{ query }}" placeholder="Rechercher par nom d'utilisateur ou email" required>
+                <button type="submit">Rechercher</button>
+            </form>
+    
+            <div class="search-results">
+                {% if users %}
+                    <h2>Résultats de la Recherche</h2>
+                    <ul>
+                        {% for user in users %}
+                            <li>
+                                <span>{{ user.username }}</span>
+                                <a href="{% url 'messages' %}?user={{ user.username }}" class="btn">Envoyer un Message</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% elif query %}
+                    <p>Aucun utilisateur trouvé pour "{{ query }}"</p>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Messages de la Conversation Sélectionnée -->
+        <div class="chat">
+            {% if selected_user %}
+                <h2>Conversation avec {{ selected_user.username }}</h2>
+                <div class="chat-messages">
+                    {% for message in messages %}
+                        <div class="{% if message.sender == user %}sent{% else %}received{% endif %}">
+                            <p>{{ message.content }}</p>
+                            <small>{{ message.timestamp }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+                <form method="post" action="{% url 'send_message' selected_user.username %}">
+                    {% csrf_token %}
+                    <textarea name="content" placeholder="Tapez votre message ici..." required></textarea>
+                    <button type="submit">Envoyer</button>
+                </form>
+            {% else %}
+                <p>Sélectionnez une conversation pour voir les messages.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="footer">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'create_post' %}">
+            <i class="fas fa-plus-square footer-icon"></i>
+        </a>
+        <a href="{% url 'profile' %}">
+            <i class="fas fa-user footer-icon"></i>
+        </a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; 
+}
+header {
+    text-align: center;
+    padding: 20px;
+    background-color: #5a9bd6;
+    color: white;
+}
+.notification-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px;
+}
+.notification-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+.notification-content {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+.notification-title {
+    font-weight: bold;
+}
+.notification-message {
+    margin: 5px 0;
+}
+.notification-timestamp {
+    font-size: 0.8em;
+    color: #666;
+}
+.notification-form {
+    margin-left: auto;
+}
+.mark-as-read-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.mark-as-read-button:hover {
+    background-color: #0056b3;
+}
+.no-notifications {
+    text-align: center;
+    color: #666;
+}
+.profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #5a9bd6;
+    padding: 1rem 0;
+    border-top: 1px solid #333;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footer-icon:hover {
+    color: #000;
+}

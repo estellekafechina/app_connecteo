@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche - Connecteo</title>
+    <link rel="stylesheet" href="{% static 'core/css/search.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header-title">Recherche</h1>
+        <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
+        
+    </header>
+
+    <main class="main-content">
+        <h2>Résultats de recherche pour : "{{ query }}"</h2>
+
+        {% if users %}
+            <section class="search-results">
+                <h3>Utilisateurs trouvés</h3>
+                <ul>
+                    {% for user in users %}
+                        <li>
+                            <span>{{ user.username }}</span>
+                            <a href="{% url 'profile' username=user.username %}" class="btn">Voir Profil</a>
+                            <a href="{% url 'messages' %}?user={{ user.username }}" class="btn">Envoyer un Message</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <p>Aucun utilisateur trouvé.</p>
+        {% endif %}
+
+        {% if posts %}
+            <section class="search-results">
+                <h3>Posts trouvés</h3>
+                <ul>
+                    {% for post in posts %}
+                        <li>
+                            <strong>{{ post.user.username }}</strong> : {{ post.content }}
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="Image du post" class="img-fluid">
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% else %}
+            <p>Aucun post trouvé.</p>
+        {% endif %}
+    </main>
+
+    <div class="footer">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'create_post' %}">
+            <i class="fas fa-plus-square footer-icon"></i>
+        </a>
+        <a href="{% url 'profile' %}">
+            <i class="fas fa-user footer-icon"></i>
+        </a>
+    </div>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+</html>

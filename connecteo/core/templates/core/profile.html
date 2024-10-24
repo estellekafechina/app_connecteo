@@ -1,142 +1,72 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Profile - Connecteo</title>
+    <link rel="stylesheet" href="{% static 'core/css/profile_css.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #fff;
-            border-bottom: 1px solid #e0e0e0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .profile-header img {
-            border-radius: 50%;
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border: 2px solid #0095f6;
-        }
-        .profile-info {
-            flex-grow: 1;
-            margin-left: 20px;
-        }
-        .profile-info h1 {
-            margin: 0;
-            font-size: 28px;
-            color: #222;
-        }
-        .profile-info p {
-            margin: 8px 0;
-            color: #666;
-        }
-        .edit-profile-btn {
-            padding: 8px 15px;
-            border: 1px solid #dbdbdb;
-            border-radius: 3px;
-            background-color: #f9f9f9;
-            color: #333;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .edit-profile-btn:hover {
-            background-color: #f0f0f0;
-        }
-        .create-post-btn {
-            padding: 10px 20px;
-            background-color: #0095f6;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .create-post-btn:hover {
-            background-color: #0077cc;
-        }
-        .posts {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-            gap: 20px;
-            justify-content: center;
-        }
-        .post {
-            width: 30%;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        .post:hover {
-            transform: translateY(-5px);
-        }
-        .post img {
-            width: 100%;
-            height: auto;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        @media (max-width: 768px) {
-            .post {
-                width: 45%;
-            }
-            .profile-header {
-                flex-direction: column;
-                align-items: center;
-            }
-            .profile-info {
-                margin-left: 0;
-                text-align: center;
-            }
-        }
-        @media (max-width: 480px) {
-            .post {
-                width: 100%;
-            }
-        }
-    </style>
 </head>
 <body>
+    <!-- Header -->
     <div class="profile-header">
-        <img src="{{ user.profile_picture.url }}" alt="Profile Picture">
+        <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture">
         <div class="profile-info">
             <h1>{{ user.username }}</h1>
             <p>{{ user.bio }}</p>
-            <a href="{% url 'profile_update' %}" class="edit-profile-btn">Modifier le profil</a>
         </div>
-        <a href="{% url 'create_post' %}" class="create-post-btn">Créer un nouveau post</a>
+        <a href="{% url 'profile_update' %}" class="edit-profile-btn">Modifier le profil</a>
     </div>
 
+    <!-- Posts Section -->
     <div class="posts">
         {% if posts %}
-            {% for post in posts %}
-                <div class="post">
-                    <a href="{% url 'post_detail' post.id %}">
-                        <img src="{{ post.image.url }}" alt="{{ post.title }}">
-                        <div class="post-info">
-                            <h3>{{ post.title }}</h3>
-                            <p>Publié le {{ post.created_at|date:"d M Y" }}</p>
-                        </div>
-                    </a>
-                </div>
-            {% endfor %}
+            <h3>Mes Posts</h3>
+            <ul class="list-group">
+                {% for post in posts %}
+                    <li class="list-group-item">
+                        <h5>{{ post.content }}</h5>
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Post image" class="img-fluid">
+                        {% endif %}
+                        <p><small>Posté le {{ post.created_at }}</small></p>
+                    </li>
+                {% endfor %}
+            </ul>
         {% else %}
             <p>Aucun post trouvé.</p>
         {% endif %}
     </div>
+
+    <!-- Footer Icons -->
+    <div class="footer">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'create_post' %}">
+            <i class="fas fa-plus-square footer-icon"></i>
+        </a>
+        <a href="{% url 'profile' %}">
+            <i class="fas fa-user footer-icon"></i>
+        </a>
+    </div>
+
+    <!-- Script for dynamic behavior -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.getElementById("menu");
+            if (menu.style.display === "block") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "block";
+            }
+        }
+    </script>
 </body>
 </html>

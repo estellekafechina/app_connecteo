@@ -1,177 +1,68 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Connecteo</title>
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fff; 
-        }
-        .header {
-            background-color: #5a9bd6; 
-            color: white;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .header-title {
-            margin: 0;
-            font-size: 1.5rem;
-        }
-        .menu-icon {
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: none;
-        }
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem;
-            border-radius: 4px;
-            background-color: #5a9bd6; 
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .nav a:hover {
-            background-color: #87CEFA;
-        }
-        .nav i {
-            font-size: 1.2rem;
-        }
-        .main-content {
-            padding: 2rem;
-        }
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .latest-posts-section {
-            margin: 2rem 0;
-        }
-        .latest-posts-section h2 {
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-        .post-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 1.5rem;
-        }
-        .post-item {
-            background-color: white;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 30%;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .post-item h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .post-item p {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        .links {
-            margin-top: 1rem;
-        }
-        .btn {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            margin-right: 0.5rem;
-            background-color: #5a9bd6;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .btn:hover {
-            background-color: #5a9bd6;
-        }
-        .footer {
-            background-color: #5a9bd6;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-
-        /* Responsive Menu */
-        @media (max-width: 768px) {
-            .nav {
-                display: none;
-            }
-            .menu-icon {
-                display: block;
-            }
-            .menu {
-                display: none;
-                position: absolute;
-                top: 60px;
-                right: 20px;
-                background-color: #5a9bd6;
-                padding: 1rem;
-                border-radius: 8px;
-            }
-            .menu a {
-                display: block;
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
 </head>
 <body>
+    <!-- Header avec le menu -->
     <header class="header">
-        <h1 class="header-title">Bienvenue, {{ user.first_name }}!</h1>
+        <h1 class="header-title">Bienvenue, {{ user.username }}!</h1>
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <nav class="nav">
-            <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Mon Profil</a>
-            <a href="{% url 'messages' %}"><i class="fas fa-envelope"></i> Messages</a>
-            <a href="{% url 'notifications' %}"><i class="fas fa-bell"></i> Notifications</a>
+            <a href="{% url 'profile' %}"><i class="fas fa-user"></i>Mon Profil</a>
             <a href="{% url 'logout' %}" class="btn logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
         </nav>
-        
     </header>
 
-    <main class="main-content">
 
-        <p>Heureux de vous revoir, {{ user.first_name }} !</p>
+    <!-- Contenu principal -->
+    <main class="main-content">
         <section class="welcome-section">
-            <h1>Bienvenue sur Connecteo</h1>
-            <div class="links">
-            </div>
+            {% comment %} <p>Heureux de vous revoir, {{ user.username }} !</p> {% endcomment %}
         </section>
 
         <section class="latest-posts-section">
-            <h2>Derniers posts</h2>
-            <div class="post-list">
-                
+            <div class="posts-list">
+                {% for post in posts %}
+                    <div class="post-item">
+                        <h5>{{ post.user.username }}</h5>
+                        <p>{{ post.content }}</p>
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="Image du post" class="img-fluid">
+                        {% endif %}
+                        <p><small>Posté le {{ post.created_at }}</small></p>
+                    </div>
+                {% endfor %}
             </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Connecteo. Tous droits réservés.</p>
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'messages' %}">
+            <i class="fas fa-envelope footer-icon"></i>
+        </a>
+        <a href="{% url 'notifications' %}">
+            <i class="fas fa-bell footer-icon"></i>
+        </a>
+
     </footer>
 
     <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
+    <!-- Script pour le menu -->
     <script>
         function toggleMenu() {
             var menu = document.getElementById("menu");

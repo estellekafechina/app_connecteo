@@ -58,17 +58,17 @@
 <body>
     <div class="container">
         <h1>Create a New Post</h1>
-        <form method="post" action="{% url 'create_post' %}">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" class="form-control" required>
+                <label for="content">Contenu</label>
+                <textarea name="content" id="content" class="form-control" rows="3" placeholder="Qu'avez-vous à dire ?"></textarea>
             </div>
             <div class="form-group">
-                <label for="content">Content:</label>
-                <textarea id="content" name="content" class="form-control" rows="5" required></textarea>
+                <label for="image">Image (facultatif)</label>
+                <input type="file" name="image" id="image" class="form-control-file">
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-3">Publier</button>
         </form>
     </div>
 </body>

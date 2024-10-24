@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff; 
+}
+
+.header {
+    background-color: #5a9bd6; 
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.menu-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #5a9bd6; 
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav a:hover {
+    background-color: #87CEFA;
+}
+
+.nav i {
+    font-size: 1.2rem;
+}
+
+.main-content {
+    padding: 2rem;
+}
+
+.welcome-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.latest-posts-section {
+    margin: 2rem 0;
+}
+
+.latest-posts-section h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.posts-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 1.5rem;
+}
+
+.post {
+    background-color: white;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 30%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.post h5 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.post p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #5a9bd6;
+    padding: 1rem 0;
+    border-top: 1px solid #333;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footer-icon:hover {
+    color: #000;
+}
+
+
+
+ 
+
+/* Responsive Menu */
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+    }
+    .menu-icon {
+        display: block;
+    }
+    .menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background-color: #5a9bd6;
+        padding: 1rem;
+        border-radius: 8px;
+    }
+    .menu a {
+        display: block;
+        margin-bottom: 1rem;
+    }
+}

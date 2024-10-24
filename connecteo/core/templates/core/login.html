@@ -28,35 +28,91 @@
 
         .login-container h1 {
             margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
         }
 
-        .login-container input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+
+        .form-group label {
+            flex: 1;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            flex: 2;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
         }
 
         .login-container button {
             width: 100%;
             padding: 12px;
-            background-color: #87CEFA;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
         }
 
         .login-container button:hover {
-            background-color: #87CEFA;
+            background-color: #0056b3;
         }
 
         .login-container a {
             display: block;
             margin-top: 10px;
-            color: #0077cc;
+            color: #007bff;
             text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login-container a:hover {
+            text-decoration: underline;
+        }
+
+        .messages {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0 0;
+        }
+
+        .messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .messages li.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .messages li.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .messages li.warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .messages li.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
         }
     </style>
 </head>
@@ -66,13 +122,56 @@
     <h1>Connexion</h1>
     <form method="post">
         {% csrf_token %}
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Mot de passe" required>
+        <div class="form-group">
+            <label for="username">Identifiant</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+        </div>
         <button type="submit">Se connecter</button>
     </form>
     <a href="{% url 'register' %}">S'inscrire</a>
     {% comment %} <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a> {% endcomment %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
+<script>
+    // Fonction pour ouvrir la modale
+    function openModal(message) {
+        document.getElementById('errorMessage').innerText = message;
+        document.getElementById('errorModal').style.display = 'flex';
+    }
 
+    // Fonction pour fermer la modale
+    function closeModal() {
+        document.getElementById('errorModal').style.display = 'none';
+    }
+
+    // Vérifier si des erreurs existent et ouvrir la modale
+    document.addEventListener('DOMContentLoaded', (event) => {
+        let errorMessages = [];
+        let fieldsWithErrors = document.querySelectorAll('.errorlist');
+
+        fieldsWithErrors.forEach((field) => {
+            let inputField = field.nextElementSibling; // Sélectionner le champ d'entrée suivant
+            if (inputField) {
+                inputField.classList.add('error'); // Ajouter la classe d'erreur au champ concerné
+            }
+            // Ajouter les messages d'erreur à la liste
+            errorMessages.push(field.innerText);
+        });
+
+        if (errorMessages.length > 0) {
+            openModal(errorMessages.join('\n')); // Afficher les messages d'erreur dans la modale
+        }
+    });
+</script>
 </body>
 </html>
