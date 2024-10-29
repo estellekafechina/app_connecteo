@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <style>
-        /* Ajoutez ici votre CSS */
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
@@ -53,11 +52,38 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background-color: #5a9bd6;
+            padding: 1rem 0;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-icon {
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .footer-icon:hover {
+            color: #000;
+        }
     </style>
 </head>
 <body>
+    <header>
+        
+    </header>
+    <main>
+
+
     <div class="container">
-        <h1>Create a New Post</h1>
+        <h1>Faire une publication</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
@@ -65,11 +91,31 @@
                 <textarea name="content" id="content" class="form-control" rows="3" placeholder="Qu'avez-vous à dire ?"></textarea>
             </div>
             <div class="form-group">
-                <label for="image">Image (facultatif)</label>
+                <label for="image">Image</label>
                 <input type="file" name="image" id="image" class="form-control-file">
             </div>
             <button type="submit" class="btn btn-primary mt-3">Publier</button>
         </form>
     </div>
+    
+    <footer>
+        <div class="footer">
+            <a href="{% url 'home' %}">
+                <i class="fas fa-home footer-icon"></i>
+            </a>
+            <a href="{% url 'search' %}">
+                <i class="fas fa-search footer-icon"></i>
+            </a>
+            <a href="{% url 'create_post' %}">
+                <i class="fas fa-plus-square footer-icon"></i>
+            </a>
+            <a href="{% url 'profile' %}">
+                <i class="fas fa-user footer-icon"></i>
+            </a>
+        </div>
+    </footer>
+    
+    </main>
+    
 </body>
 </html>

@@ -28,6 +28,8 @@ urlpatterns = [
     path('search/', views.search_view, name='search'),
     path('search_user/', views.search_users_view, name='search_users'),
     path('messages/send/<str:username>/', views.send_message, name='send_message'),
+    path('profile/<str:username>/', views.profile_view, name='profile'),
+    path('post/<int:post_id>/delete/', views.delete_post, name='delete_post'),
 
 ]
 router = DefaultRouter()

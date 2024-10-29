@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
-# Create your views here.
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from .forms import ProfileUpdateForm, UserUpdateForm ,CustomUserCreationForm
@@ -17,7 +16,7 @@ from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ProfileUpdateForm
-
+from django.db.models import Q
 
 
 def register(request):
@@ -56,23 +55,26 @@ def home(request):
         posts = Post.objects.none()
     return render(request, 'core/home.html', {'posts': posts, 'followed_users': followed_users})
 
-
-
 @login_required
-def profile_view(request):
-    profile = get_object_or_404(Profile,user=request.user)
-    posts = Post.objects.filter(user=profile.user).order_by('-created_at')
+def profile_view(request, username=None):
+    if not username:
+        return redirect('profile', username=request.user.username)
+    
+    user_profile = get_object_or_404(User, username=username)
+    
+    posts = user_profile.posts.all().order_by('-created_at')
 
     context = {
-        'profile': profile,
+        'user_profile': user_profile,
         'posts': posts,
     }
     return render(request, 'core/profile.html', context)
 
 
-
 @login_required
 def profile_update(request):
+    user_form = UserUpdateForm(instance=request.user)
+    profile_form = ProfileUpdateForm(instance=request.user.profile)
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -112,7 +114,8 @@ def create_post(request):
         content = request.POST.get('content')
         image = request.FILES.get('image')
         post = Post.objects.create(user=request.user, content=content, image=image)
-        return redirect('home')  # Redirige vers la page d'accueil après la création du post
+        messages.success(request, 'Votre publication a été créée avec succès!')
+        return redirect('profile', username=request.user.username)
     return render(request, 'core/create_post.html')
 
 
@@ -129,9 +132,9 @@ def messages_view(request):
     if selected_user:
         selected_user = get_object_or_404(User, username=selected_user)
         messages = Message.objects.filter(
-            (models.Q(sender=user) & models.Q(receiver=selected_user)) |
-            (models.Q(sender=selected_user) & models.Q(receiver=user))
-        )
+            (Q(sender=user) & Q(receiver=selected_user)) |
+            (Q(sender=selected_user) & Q(receiver=user))
+        ).order_by('timestamp')
 
     context = {
         'conversations': conversations,
@@ -139,6 +142,7 @@ def messages_view(request):
         'selected_user': selected_user
     }
     return render(request, 'core/messages.html', context)
+
 
 @login_required
 def notification_view(request):
@@ -235,6 +239,19 @@ def search_users_view(request):
         'query': query
     }
     return render(request, 'core/search.html', context)
+
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.user != request.user:
+        messages.error(request, "Vous n'avez pas l'autorisation de supprimer ce post.")
+        return redirect('profile', username=request.user.username)
+    
+    post.delete()
+    messages.success(request, "Le post a été supprimé avec succès.")
+    return redirect('profile', username=request.user.username)
 
 #___________________________________________________VIEW SETS____________________________________________________________________
 

@@ -21,3 +21,24 @@ class NotificationConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'notification': notification
         }))
+
+class MessageConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.user = self.scope["user"]
+        if self.user.is_authenticated:
+            await self.accept()
+        else:
+            await self.close()
+
+    async def disconnect(self, close_code):
+        pass
+
+    async def receive(self, text_data):
+        # Réception et traitement des messages
+        pass
+
+    async def send_message(self, event):
+        message = event['message']
+        await self.send(text_data=json.dumps({
+            'message': message
+        }))

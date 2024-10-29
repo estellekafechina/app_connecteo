@@ -27,7 +27,6 @@
         <button type="submit">Se connecter</button>
     </form>
     <a href="{% url 'register' %}">S'inscrire</a>
-    {% comment %} <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a> {% endcomment %}
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -37,33 +36,29 @@
     {% endif %}
 </div>
 <script>
-    // Fonction pour ouvrir la modale
     function openModal(message) {
         document.getElementById('errorMessage').innerText = message;
         document.getElementById('errorModal').style.display = 'flex';
     }
 
-    // Fonction pour fermer la modale
     function closeModal() {
         document.getElementById('errorModal').style.display = 'none';
     }
 
-    // Vérifier si des erreurs existent et ouvrir la modale
     document.addEventListener('DOMContentLoaded', (event) => {
         let errorMessages = [];
         let fieldsWithErrors = document.querySelectorAll('.errorlist');
 
         fieldsWithErrors.forEach((field) => {
-            let inputField = field.nextElementSibling; // Sélectionner le champ d'entrée suivant
+            let inputField = field.nextElementSibling; 
             if (inputField) {
-                inputField.classList.add('error'); // Ajouter la classe d'erreur au champ concerné
+                inputField.classList.add('error'); 
             }
-            // Ajouter les messages d'erreur à la liste
             errorMessages.push(field.innerText);
         });
 
         if (errorMessages.length > 0) {
-            openModal(errorMessages.join('\n')); // Afficher les messages d'erreur dans la modale
+            openModal(errorMessages.join('\n')); 
         }
     });
 </script>

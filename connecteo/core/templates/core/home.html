@@ -9,21 +9,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- Header avec le menu -->
     <header class="header">
-        <h1 class="header-title">Bienvenue, {{ user.username }}!</h1>
+        <h1 class="header-title">Hi, {{ user.username }}!</h1>
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
         <nav class="nav">
-            <a href="{% url 'profile' %}"><i class="fas fa-user"></i>Mon Profil</a>
-            <a href="{% url 'logout' %}" class="btn logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+            <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Mon Profil</a>
+            <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </button>
+            </form>
         </nav>
     </header>
 
-
-    <!-- Contenu principal -->
     <main class="main-content">
         <section class="welcome-section">
-            {% comment %} <p>Heureux de vous revoir, {{ user.username }} !</p> {% endcomment %}
+            <p>Bienvenue sur votre fil d'actualités</p>
         </section>
 
         <section class="latest-posts-section">
@@ -35,14 +37,12 @@
                         {% if post.image %}
                             <img src="{{ post.image.url }}" alt="Image du post" class="img-fluid">
                         {% endif %}
-                        <p><small>Posté le {{ post.created_at }}</small></p>
                     </div>
                 {% endfor %}
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <a href="{% url 'home' %}">
             <i class="fas fa-home footer-icon"></i>
@@ -56,13 +56,10 @@
         <a href="{% url 'notifications' %}">
             <i class="fas fa-bell footer-icon"></i>
         </a>
-
     </footer>
 
-    <!-- Font Awesome Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
-    <!-- Script pour le menu -->
     <script>
         function toggleMenu() {
             var menu = document.getElementById("menu");

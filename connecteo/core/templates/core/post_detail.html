@@ -1,29 +1,59 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Detail</title>
+    <title>Profile - Connecteo</title>
+    <link rel="stylesheet" href="{% static 'core/css/profile_css.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <h1>Post Detail</h1>
-    <div>
-        <h2>{{ post.content }}</h2>
-        <img src="{{ post.image.url }}" alt="Post Image">
-        <p>Posted by {{ post.user.username }} on {{ post.created_at }}</p>
-
-        <h3>Comments:</h3>
-        <form method="post">
-            {% csrf_token %}
-            <textarea name="content" rows="4" placeholder="Add a comment"></textarea>
-            <button type="submit">Comment</button>
-        </form>
-
-        <ul>
-            {% for comment in comments %}
-                <li>{{ comment.user.username }}: {{ comment.content }} - {{ comment.created_at }}</li>
-            {% endfor %}
-        </ul>
+    <div class="profile-header">
+        <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture">
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.bio }}</p>
+        </div>
+        <a href="{% url 'profile_update' %}" class="edit-profile-btn">Modifier le profil</a>
     </div>
+
+    <div class="posts-section">
+        {% if posts %}
+            <h3>Mes Posts</h3>
+            <div class="posts-grid">
+                {% for post in posts %}
+                    <div class="post-item">
+                        {% if post.image %}
+                            <a href="{% url 'post_detail' post.id %}">
+                                <img src="{{ post.image.url }}" alt="Post image" class="post-image">
+                            </a>
+                            <p><small>Posté le {{ post.created_at }}</small></p>
+
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun post trouvé.</p>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'create_post' %}">
+            <i class="fas fa-plus-square footer-icon"></i>
+        </a>
+        <a href="{% url 'profile' %}">
+            <i class="fas fa-user footer-icon"></i>
+        </a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 </body>
 </html>
