@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="profile-header">
-        <img src="{% if user.profile_picture %}{{ user.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture">
+        <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture">
         <div class="profile-info">
             <h1>{{ user.username }}</h1>
             <p>{{ user.bio }}</p>
@@ -35,6 +35,13 @@
             <p>Aucun post trouvé.</p>
         {% endif %}
     </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
     <div class="footer">
         <a href="{% url 'home' %}">
