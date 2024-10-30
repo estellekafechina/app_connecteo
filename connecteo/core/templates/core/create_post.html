@@ -1,83 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'core/css/create_post.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <title>Create Post</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333333;
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            color: #ffffff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            text-align: center;
-        }
-        .btn-primary {
-            background-color: #007bff;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            background-color: #5a9bd6;
-            padding: 1rem 0;
-            border-top: 1px solid #333;
-        }
-        
-        .footer-icon {
-            font-size: 1.5rem;
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        
-        .footer-icon:hover {
-            color: #000;
-        }
     </style>
 </head>
 <body>
     <header>
-        
+        <div>
+        </div>
     </header>
     <main>
 
@@ -86,18 +22,33 @@
         <h1>Faire une publication</h1>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="content">Contenu</label>
-                <textarea name="content" id="content" class="form-control" rows="3" placeholder="Qu'avez-vous à dire ?"></textarea>
-            </div>
+            
             <div class="form-group">
                 <label for="image">Image</label>
-                <input type="file" name="image" id="image" class="form-control-file">
+                <input type="file" name="image" id="image" class="form-control-file" required>
+            </div>
+            <div class="form-group">
+                <label for="content">Legende</label>
+                <textarea name="content" id="content" class="form-control" rows="3" placeholder="Qu'avez-vous à dire ?"></textarea>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Publier</button>
         </form>
     </div>
-    
+    {% if form.errors %}
+    <div class="form-errors">
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ field.label }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <footer>
         <div class="footer">
             <a href="{% url 'home' %}">

@@ -123,24 +123,27 @@ def create_post(request):
 @login_required
 def messages_view(request):
     user = request.user
-    conversations = User.objects.filter(received_messages__sender=user) | User.objects.filter(sent_messages__receiver=user)
-    conversations = conversations.distinct()
+    conversations = User.objects.filter(
+        Q(received_messages__sender=user) | Q(sent_messages__receiver=user)
+    ).distinct()
 
-    selected_user = request.GET.get('user')
+    selected_username = request.GET.get('user')
     messages = None
+    selected_user = None
 
-    if selected_user:
-        selected_user = get_object_or_404(User, username=selected_user)
+    if selected_username:
+        selected_user = get_object_or_404(User, username=selected_username)
         messages = Message.objects.filter(
-            (Q(sender=user) & Q(receiver=selected_user)) |
-            (Q(sender=selected_user) & Q(receiver=user))
+            Q(sender=user, receiver=selected_user) | Q(sender=selected_user, receiver=user)
         ).order_by('timestamp')
 
     context = {
         'conversations': conversations,
         'messages': messages,
-        'selected_user': selected_user
+        'selected_user': selected_user,
+        'user': user,  
     }
+    
     return render(request, 'core/messages.html', context)
 
 
@@ -176,7 +179,7 @@ def follow_user(request, username):
 
 
 @login_required
-def send_message(request):
+def send_message(request, username):
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():

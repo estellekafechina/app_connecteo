@@ -12,45 +12,55 @@
     <header class="header">
         <h1 class="header-title">Recherche</h1>
         <i class="fas fa-bars menu-icon" onclick="toggleMenu()"></i>
-        
     </header>
 
+    <div>
+        <form method="get" action="{% url 'search' %}" class="search-container">
+            <input type="text" name="q" value="{{ query|default_if_none:'' }}" placeholder="Rechercher un utilisateur ou un post" required>
+            <button type="submit">Rechercher</button>
+        </form> 
+    </div>
+
     <main class="main-content">
-        <h2>Résultats de recherche pour : "{{ query }}"</h2>
+        {% if query %}
+            <h2>Résultats de recherche pour : "{{ query }}"</h2>
 
-        {% if users %}
-            <section class="search-results">
-                <h3>Utilisateurs trouvés</h3>
-                <ul>
-                    {% for user in users %}
-                        <li>
-                            <span>{{ user.username }}</span>
-                            <a href="{% url 'profile' username=user.username %}" class="btn">Voir Profil</a>
-                            <a href="{% url 'messages' %}?user={{ user.username }}" class="btn">Envoyer un Message</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </section>
-        {% else %}
-            <p>Aucun utilisateur trouvé.</p>
-        {% endif %}
+            {% if users %}
+                <section class="search-results">
+                    <h3>Utilisateurs trouvés</h3>
+                    <ul>
+                        {% for user in users %}
+                            <li>
+                                <span>{{ user.username }}</span>
+                                <a href="{% url 'profile' user.username %}" class="btn">Voir Profil</a>
+                                <a href="{% url 'messages' %}?user={{ user.username }}" class="btn">Envoyer un Message</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% else %}
+                <p>Aucun utilisateur trouvé.</p>
+            {% endif %}
 
-        {% if posts %}
-            <section class="search-results">
-                <h3>Posts trouvés</h3>
-                <ul>
-                    {% for post in posts %}
-                        <li>
-                            <strong>{{ post.user.username }}</strong> : {{ post.content }}
-                            {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="Image du post" class="img-fluid">
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            </section>
+            {% if posts %}
+                <section class="search-results">
+                    <h3>Posts trouvés</h3>
+                    <ul>
+                        {% for post in posts %}
+                            <li>
+                                <strong>{{ post.user.username }}</strong> : {{ post.content }}
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" alt="Image du post" class="img-fluid">
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% else %}
+                <p>Aucun post trouvé.</p>
+            {% endif %}
         {% else %}
-            <p>Aucun post trouvé.</p>
+            <p>Utilisez la barre de recherche pour trouver des utilisateurs ou des posts.</p>
         {% endif %}
     </main>
 

@@ -1,11 +1,18 @@
-/* Header styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
 .header {
-    background-color: #5a9bd6;
-    color: white;
-    padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 1rem;
+    background-color: #5a9bd6;
+    color: white;
+    border-bottom: 1px solid #333;
 }
 
 .header-title {
@@ -82,18 +89,22 @@
     }
 }
 
-/* Footer styles */
 .footer {
-    background-color: #5a9bd6;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-    padding: 1rem;
     position: fixed;
     bottom: 0;
     width: 100%;
+    margin:0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #5a9bd6;
+    padding: 1rem 0;
+    border-top: 1px solid #333;
 }
 
 .footer-icon {
     font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
 }
+

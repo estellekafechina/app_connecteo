@@ -6,87 +6,57 @@ body {
     padding: 0;
 }
 
-.header {
+.messages-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     padding: 1rem;
-    background-color: #5a9bd6;
-    color: white;
-    border-bottom: 1px solid #333;
+    background-color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-.header-title {
+.profile-title h1 {
     font-size: 1.5rem;
-    color: #fff;
+    color: #333;
     margin: 0;
 }
 
-.search-bar {
+.search-container {
     display: flex;
     align-items: center;
     background-color: #fff;
     border-radius: 20px;
     padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.search-bar input {
+.search-container input {
     background: none;
     border: none;
     outline: none;
     padding: 0.5rem;
-    flex: 1;
+    flex: 2;
 }
 
-.search-bar i {
-    color: #333;
-    margin-left: 0.5rem;
-}
-
-.tabs {
-    display: flex;
-    justify-content: space-around;
+.search-container button {
     background-color: #5a9bd6;
-    padding: 1rem 0;
-    border-bottom: 1px solid #333;
-}
-
-.tab {
-    background: none;
-    border: none;
     color: #fff;
-    font-size: 1rem;
+    border: none;
     padding: 0.5rem 1rem;
     cursor: pointer;
+    border-radius: 20px;
 }
 
-.tab.active {
-    color: #000;
-    border-bottom: 2px solid #fff;
+.messages-list {
+    margin: 1rem 0;
+    padding: 0;
 }
 
-.messages-container {
-    padding: 1rem;
-}
-
-.archived {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.archived i {
-    color: #5a9bd6;
-    margin-right: 0.5rem;
-}
-
-.conversations-list {
-    list-style: none;
+.conversations {
+    list-style-type: none;
     padding: 0;
     margin: 0;
 }
@@ -95,13 +65,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-bottom: 1rem;
+    padding: 0.8rem 1rem;
+    background-color: #ffffff;
+    margin-bottom: 1px;
     cursor: pointer;
-    transition: background 0.3s;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .conversation-item:hover {
@@ -111,13 +80,17 @@ body {
 .user-info {
     display: flex;
     align-items: center;
+    text-decoration: none;
+
 }
 
 .profile-pic {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     margin-right: 1rem;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
 }
 
 .user-details {
@@ -126,6 +99,7 @@ body {
 }
 
 .username {
+    font-weight: bold;
     font-size: 1rem;
     color: #333;
 }
@@ -135,9 +109,9 @@ body {
     color: #666;
 }
 
-.message-time {
-    font-size: 0.8rem;
-    color: #999;
+.message-status {
+    font-size: 1.2rem;
+    color: #5a9bd6;
 }
 
 .footer {
