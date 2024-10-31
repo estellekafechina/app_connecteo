@@ -197,7 +197,7 @@ def toggle_follow(request, username):
 @login_required
 def followers_list(request, username):
     user = get_object_or_404(User, username=username)
-    followers = user.profile.followers.all()  # Suppose que la relation est ManyToManyField
+    followers = user.profile.followers.all()  
     context = {
         'user': user,
         'followers': followers,
@@ -278,6 +278,17 @@ def delete_post(request, post_id):
     post.delete()
     messages.success(request, "Le post a été supprimé avec succès.")
     return redirect('profile', username=request.user.username)
+
+def confirm_email(request, code):
+    try:
+        profile = get_object_or_404(Profile, confirmation_code=code)
+        profile.email_confirmed = True
+        profile.save()
+        messages.success(request, "Votre email a été confirmé avec succès !")
+        return redirect('login')
+    except Profile.DoesNotExist:
+        messages.error(request, "Le code de confirmation est invalide.")
+        return redirect('home')
 
 #___________________________________________________VIEW SETS____________________________________________________________________
 
