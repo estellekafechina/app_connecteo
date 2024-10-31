@@ -1,0 +1,205 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #5a9bd6;
+    color: white;
+    border-bottom: 1px solid #333;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.menu-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none; 
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav a:hover {
+    background-color: #87CEFA;
+}
+
+.logout-btn {
+    background-color: #ff4d4d;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    color: #fff;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #e60000;
+}
+
+#menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: #5a9bd6;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 200px;
+}
+
+#menu a {
+    display: block;
+    margin-bottom: 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+#menu a:hover {
+    background-color: #87CEFA;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none; 
+    }
+    .menu-icon {
+        display: block; 
+    }
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin:0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #5a9bd6;
+    padding: 1rem 0;
+    border-top: 1px solid #333;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+
+/* General Styles for the Post List */
+.posts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;  /* Space between posts */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;  /* Center the posts list */
+}
+
+/* Individual Post Item Styles */
+.post-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+}
+
+.post-item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Post Header to show User Info */
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Post Content and Image */
+.post-item p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Post Date */
+.post-date {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: auto;
+    text-align: right;
+}
+
+.post-actions {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+    font-size: 1.5rem;
+}
+
+.post-actions i {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.post-actions i:hover {
+    color: #007bff; /* Color change on hover to indicate interactivity */
+}
+
+/* Style for the post details (likes, comments) */
+.post-details {
+    margin-top: 10px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.post-details p {
+    margin: 5px 0;
+}
