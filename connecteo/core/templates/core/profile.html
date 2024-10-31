@@ -10,14 +10,44 @@
 </head>
 <body>
     <div class="profile-header">
-        <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture">
-        <div class="profile-info">
-            <h1>{{ user.username }}</h1>
-            <p>{{ user.bio }}</p>
+        <div class="profile-picture-container">
+            <img src="{% if user_profile.profile.profile_picture %}{{ user_profile.profile.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="Profile Picture" class="profile-picture">
         </div>
-        <a href="{% url 'profile_update' %}" class="edit-profile-btn">Modifier le profil</a>
+        <div class="profile-info">
+            <h1 class="username">{{ user_profile.username }}</h1>
+            <p class="bio">{{ user_profile.profile.bio }}</p>
+        </div>
+        <div class="profile-stats">
+            <div class="followers profile-stat-item">
+                <a href="{% url 'followers_list' user_profile.username %}">
+                    <strong>{{ user_profile.profile.followers.count }}</strong> followers
+                </a>
+            </div>
+            <div class="following profile-stat-item">
+                <a href="{% url 'following_list' user_profile.username %}">
+                    <strong>{{ user_profile.profile.following.count }}</strong> suivi(e)s
+                </a>
+            </div>
+            <div class="publications profile-stat-item">
+                <strong>{{ posts.count }}</strong> publications
+            </div>
+        </div>
+    
+        {% if is_own_profile %}
+            <a href="{% url 'profile_update' %}" class="edit-profile-btn">Modifier le profil</a>
+        {% else %}
+            <form method="post" action="{% url 'follow_user' user_profile.username %}">
+                {% csrf_token %}
+                {% if is_following %}
+                    <button type="submit" class="btn unfollow-btn">Se désabonner</button>
+                {% else %}
+                    <button type="submit" class="btn follow-btn">Suivre</button>
+                {% endif %}
+            </form>
+        {% endif %}
     </div>
 
+    <!-- Posts Section -->
     <div class="posts-section">
         {% if posts %}
             <div class="posts-grid">
@@ -28,6 +58,11 @@
                                 <img src="{{ post.image.url }}" alt="Post image" class="post-image">
                             </a>
                         {% endif %}
+                        <p>{{ post.content }}</p>
+                        <div class="post-details">
+                            <p><strong>{{ post.likes.count }}</strong> likes</p>
+                            <p><strong>{{ post.comments.count }}</strong> commentaires</p>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -35,6 +70,7 @@
             <p>Aucun post trouvé.</p>
         {% endif %}
     </div>
+
     {% if messages %}
     <ul class="messages">
         {% for message in messages %}
@@ -42,6 +78,7 @@
         {% endfor %}
     </ul>
     {% endif %}
+
     {% if form.errors %}
     <div class="form-errors">
         <ul>
@@ -55,7 +92,7 @@
             {% endfor %}
         </ul>
     </div>
-{% endif %}
+    {% endif %}
 
     <div class="footer">
         <a href="{% url 'home' %}">
@@ -67,7 +104,7 @@
         <a href="{% url 'create_post' %}">
             <i class="fas fa-plus-square footer-icon"></i>
         </a>
-        <a href="{% url 'profile' %}">
+        <a href="{% url 'profile' user.username %}">
             <i class="fas fa-user footer-icon"></i>
         </a>
     </div>

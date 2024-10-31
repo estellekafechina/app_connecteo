@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Followers de {{ user.username }}</title>
+    <link rel="stylesheet" href="{% static 'core/css/search.css' %}">
+</head>
+<body>
+    <header class="header">
+        <h2>Followers de {{ user.username }}</h2>
+    </header>
+
+    {% if followers %}
+        <ul class="followers-list">
+            {% for follower in followers %}
+                <li>
+                    <img src="{% if follower.profile.profile_picture %}{{ follower.profile.profile_picture.url }}{% else %}{% static 'core/images/default_profile.png' %}{% endif %}" alt="{{ follower.username }}" class="profile-pic">
+                    <a href="{% url 'profile' follower.username %}">{{ follower.username }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucun follower trouvé.</p>
+    {% endif %}
+
+
+    <div class="footer">
+        <a href="{% url 'home' %}">
+            <i class="fas fa-home footer-icon"></i>
+        </a>
+        <a href="{% url 'search' %}">
+            <i class="fas fa-search footer-icon"></i>
+        </a>
+        <a href="{% url 'create_post' %}">
+            <i class="fas fa-plus-square footer-icon"></i>
+        </a>
+        <a href="{% url 'profile' %}">
+            <i class="fas fa-user footer-icon"></i>
+        </a>
+    </div>
+
+    <!-- Font Awesome Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+</body>
+</html>

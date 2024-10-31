@@ -4,7 +4,8 @@ from . import views
 from rest_framework.routers import DefaultRouter
 from .views import UserViewSet, PostViewSet, CommentViewSet ,MessageViewSet,NotificationViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/', views.home, name='home'),
@@ -21,15 +22,17 @@ urlpatterns = [
     path('send_message/', views.send_message, name='send_message'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('follow/<str:username>/', views.follow, name='follow'),
+    path('follow/<str:username>/', views.toggle_follow, name='follow'),
     path('', auth_views.LoginView.as_view(template_name='core/login.html'), name='login'),
     path('confirm/<str:code>/', views.confirm_email, name='confirm_email'),
-    path('follow/<str:username>/', views.follow_user, name='follow_user'),
+    path('follow/<str:username>/', views.toggle_follow, name='follow_user'),
     path('search/', views.search_view, name='search'),
     path('search_user/', views.search_users_view, name='search_users'),
     path('messages/send/<str:username>/', views.send_message, name='send_message'),
     path('profile/<str:username>/', views.profile_view, name='profile'),
     path('post/<int:post_id>/delete/', views.delete_post, name='delete_post'),
+    path('profile/<str:username>/followers/', views.followers_list, name='followers_list'),
+    path('profile/<str:username>/following/', views.following_list, name='following_list'), 
 
 ]
 router = DefaultRouter()
@@ -41,3 +44,5 @@ router.register(r'notifications', NotificationViewSet)
 
 urlpatterns += router.urls
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

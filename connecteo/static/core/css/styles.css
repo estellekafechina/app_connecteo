@@ -108,3 +108,98 @@ body {
     transition: color 0.3s;
 }
 
+
+/* General Styles for the Post List */
+.posts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;  /* Space between posts */
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;  /* Center the posts list */
+}
+
+/* Individual Post Item Styles */
+.post-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s ease;
+}
+
+.post-item:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Post Header to show User Info */
+.post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Post Content and Image */
+.post-item p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Post Date */
+.post-date {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: auto;
+    text-align: right;
+}
+
+.post-actions {
+    display: flex;
+    gap: 15px;
+    margin: 10px 0;
+    font-size: 1.5rem;
+}
+
+.post-actions i {
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.post-actions i:hover {
+    color: #007bff; /* Color change on hover to indicate interactivity */
+}
+
+/* Style for the post details (likes, comments) */
+.post-details {
+    margin-top: 10px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.post-details p {
+    margin: 5px 0;
+}

@@ -12,8 +12,12 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     profile_image = models.ImageField(upload_to='profiles/', null=True, blank=True)
     social_links = models.URLField(max_length=255, blank=True)
-    followers = models.ManyToManyField(User, related_name='following', blank=True)
+    followers = models.ManyToManyField(User, related_name='followers_profiles', blank=True)
+    following = models.ManyToManyField(User, related_name='following_profiles', blank=True)
     confirmation_code = models.CharField(max_length=32, blank=True, null=True)
+
+    
+
 
     def __str__(self):
         return self.user.username

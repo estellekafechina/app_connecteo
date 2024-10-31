@@ -25,16 +25,26 @@ def register(request):
         if form.is_valid():
             user = form.save()
             
-            confirmation_code = get_random_string(length=32)
-            profile = Profile.objects.create(user=user, confirmation_code=confirmation_code)
-            send_mail(
-                'Confirmation de votre compte Connecteo',
-                f'Bonjour {user.username},\n\nMerci de vous être inscrit sur Connecteo. Veuillez confirmer votre adresse en cliquant sur le lien suivant :\nhttp://127.0.0.1:8000/confirm/{confirmation_code}/\n\nMerci !',
-                'noreply@connecteo.com',
-                [user.email],
-                fail_silently=False,
-            )
-            messages.success(request, "Veuillez vérifier votre email pour confirmer votre compte.")
+            # Vérifiez si un profil existe déjà avant de le créer
+            profile, created = Profile.objects.get_or_create(user=user)
+            if created:
+                confirmation_code = get_random_string(length=32)
+                profile.confirmation_code = confirmation_code
+                profile.save()
+                
+                # Envoyer l'email de confirmation
+                send_mail(
+                    'Confirmation de votre compte Connecteo',
+                    f'Bonjour {user.username},\n\nMerci de vous être inscrit sur Connecteo. Veuillez confirmer votre adresse en cliquant sur le lien suivant :\nhttp://127.0.0.1:8000/confirm/{confirmation_code}/\n\nMerci !',
+                    'noreply@connecteo.com',
+                    [user.email],
+                    fail_silently=False,
+                )
+
+                messages.success(request, "Veuillez vérifier votre email pour confirmer votre compte.")
+            else:
+                messages.warning(request, "Un profil pour cet utilisateur existait déjà.")
+
             return redirect('login')
         else:
             messages.error(request, "Veuillez corriger les erreurs ci-dessous.")
@@ -47,29 +57,52 @@ def register(request):
 def home(request):
     if not hasattr(request.user, 'profile'):
         messages.error(request, "Aucun profil associé à cet utilisateur.")
-        return redirect('profile') 
-    followed_users = request.user.following.all()
+        return redirect('profile_update') 
+
+    followed_users = request.user.profile.followers.all()
+
     if followed_users.exists():
         posts = Post.objects.filter(user__in=followed_users).order_by('-created_at')
     else:
-        posts = Post.objects.none()
+        posts = Post.objects.order_by('-created_at')[:2]
+
     return render(request, 'core/home.html', {'posts': posts, 'followed_users': followed_users})
 
 @login_required
 def profile_view(request, username=None):
     if not username:
         return redirect('profile', username=request.user.username)
-    
     user_profile = get_object_or_404(User, username=username)
-    
     posts = user_profile.posts.all().order_by('-created_at')
+    is_own_profile = (request.user == user_profile)
+    is_following = False
+    if not is_own_profile:
+        is_following = request.user.profile.following.filter(id=user_profile.id).exists()
 
     context = {
         'user_profile': user_profile,
         'posts': posts,
+        'is_own_profile': is_own_profile,
+        'is_following': is_following,
     }
     return render(request, 'core/profile.html', context)
 
+@login_required
+def follow_user(request, username):
+    user_to_follow = get_object_or_404(User, username=username)
+    profile = user_to_follow.profile
+    user_profile = request.user.profile
+
+    if user_to_follow in user_profile.following.all():
+        user_profile.following.remove(user_to_follow)
+        profile.followers.remove(request.user)
+        messages.success(request, f"Vous ne suivez plus {user_to_follow.username}.")
+    else:
+        user_profile.following.add(user_to_follow)
+        profile.followers.add(request.user)
+        messages.success(request, f"Vous suivez maintenant {user_to_follow.username}.")
+
+    return redirect('profile', username=username)
 
 @login_required
 def profile_update(request):
@@ -153,18 +186,7 @@ def notification_view(request):
 
 
 @login_required
-def follow(request, username):
-    user_to_follow = get_object_or_404(User, username=username)
-    profile = user_to_follow.profile
-    if request.user in profile.followers.all():
-        profile.followers.remove(request.user)
-    else:
-        profile.followers.add(request.user)
-    return redirect('profile', username=username)
-
-
-@login_required
-def follow_user(request, username):
+def toggle_follow(request, username):
     user_to_follow = get_object_or_404(User, username=username)
     profile = user_to_follow.profile
 
@@ -174,8 +196,28 @@ def follow_user(request, username):
     else:
         profile.followers.add(request.user)
         messages.success(request, f"Vous suivez maintenant {user_to_follow.username}.")
-    
+
     return redirect('profile', username=username)
+
+@login_required
+def followers_list(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = user.profile.followers.all()  # Suppose que la relation est ManyToManyField
+    context = {
+        'user': user,
+        'followers': followers,
+    }
+    return render(request, 'core/followers_list.html', context)
+
+@login_required
+def following_list(request, username):
+    user = get_object_or_404(User, username=username)
+    following = user.profile.following.all()
+    context = {
+        'user': user,
+        'following': following,
+    }
+    return render(request, 'core/following_list.html', context)
 
 
 @login_required
@@ -196,10 +238,7 @@ def send_message(request, username):
     return render(request, 'messages.html', {'form': form})
 
 
-@login_required
-def home_view(request):
-    latest_posts = Post.objects.order_by('-created_at')[:5] 
-    return render(request, 'core/home.html', {'latest_posts': latest_posts})
+
 
 
 def confirm_email(request, code):
