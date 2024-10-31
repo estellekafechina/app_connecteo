@@ -13,7 +13,7 @@ services:
       - db
     environment:
       - DEBUG=False
-      - SECRET_KEY=your_secret_key_here
+      - SECRET_KEY=SECRET_KEY
       - DATABASE_URL=postgres://connecteo_user:password@db:5432/connecteo_db
 
   db:

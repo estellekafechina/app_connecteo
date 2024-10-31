@@ -63,20 +63,6 @@
             <button class="close-btn" onclick="closeModal()">Fermer</button>
         </div>
     </div>
-    {% if form.errors %}
-    <div class="form-errors">
-        <ul>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <li>{{ field.label }}: {{ error }}</li>
-                {% endfor %}
-            {% endfor %}
-            {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
 
     <script>
         function openModal(message) {
@@ -100,7 +86,7 @@
             });
 
             if (errorMessages.length > 0) {
-                openModal(errorMessages.join('\n')); 
+
             }
         });
     </script>

@@ -57,6 +57,42 @@ Connecteo est une application de réseau social basée sur Django, permettant au
 - **templates/** : Contient les fichiers HTML pour l'interface utilisateur.
 - **static/** : Contient les fichiers CSS, JS, et autres fichiers statiques.
 
+## Installation locale du projet
+
+1. Clonez le projet :
+    ```bash
+    git clone git@github.com:estellekafechina/app_connecteo.git
+    cd votre_projet
+    ```
+
+2. Créez et activez un environnement virtuel :
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # Sur Windows : venv\Scripts\activate
+    ```
+
+3. Installez les dépendances :
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Créez un fichier `.env` pour y définir les variables d'environnement, y compris `DJANGO_SECRET_KEY`.
+
+5. Appliquez les migrations de la base de données :
+    ```bash
+    python manage.py migrate
+    ```
+
+6. Créez un superutilisateur pour accéder à l'administration :
+    ```bash
+    python manage.py createsuperuser
+    ```
+
+7. Lancez le serveur de développement :
+    ```bash
+    python manage.py runserver
+    ```
+
 ## Déploiement avec Docker
 
 ### Préparation pour la Production

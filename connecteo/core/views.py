@@ -19,32 +19,27 @@ from .forms import ProfileUpdateForm
 from django.db.models import Q
 
 
+from django.utils.crypto import get_random_string
+
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            confirmation_code = get_random_string(length=32)
             
-            # Vérifiez si un profil existe déjà avant de le créer
-            profile, created = Profile.objects.get_or_create(user=user)
+            profile, created = Profile.objects.get_or_create(user=user, defaults={'confirmation_code': confirmation_code})
+
             if created:
-                confirmation_code = get_random_string(length=32)
-                profile.confirmation_code = confirmation_code
-                profile.save()
-                
-                # Envoyer l'email de confirmation
                 send_mail(
                     'Confirmation de votre compte Connecteo',
-                    f'Bonjour {user.username},\n\nMerci de vous être inscrit sur Connecteo. Veuillez confirmer votre adresse en cliquant sur le lien suivant :\nhttp://127.0.0.1:8000/confirm/{confirmation_code}/\n\nMerci !',
+                    f'Bonjour {user.username},\n\nMerci de vous être inscrit sur Connecteo. Veuillez confirmer votre adresse en cliquant sur le lien suivant :\nhttp://127.0.0.1:8000/confirm/{profile.confirmation_code}/\n\nMerci !',
                     'noreply@connecteo.com',
                     [user.email],
                     fail_silently=False,
                 )
 
-                messages.success(request, "Veuillez vérifier votre email pour confirmer votre compte.")
-            else:
-                messages.warning(request, "Un profil pour cet utilisateur existait déjà.")
-
+            messages.success(request, "Veuillez vérifier votre email pour confirmer votre compte.")
             return redirect('login')
         else:
             messages.error(request, "Veuillez corriger les erreurs ci-dessous.")
