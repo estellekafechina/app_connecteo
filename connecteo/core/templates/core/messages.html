@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <!-- En-tête -->
     <div class="messages-header">
         <div class="profile-title">
             <h1>Messages</h1>
@@ -20,7 +19,6 @@
         </form>
     </div>
 
-    <!-- Liste des Conversations -->
     <div class="messages-list">
         <ul class="conversations">
             {% for conversation in conversations %}
@@ -38,7 +36,6 @@
         </ul>
     </div>
 
-    <!-- Section de Chat -->
     <div class="chat">
         {% if selected_user %}
             <h2>Conversation avec {{ selected_user.username }}</h2>
@@ -64,7 +61,6 @@
         {% endif %}
     </div>
 
-    <!-- Pied de Page -->
     <div class="footer">
         <a href="{% url 'home' %}">
             <i class="fas fa-home footer-icon"></i>

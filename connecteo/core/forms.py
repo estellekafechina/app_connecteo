@@ -46,10 +46,23 @@ class ProfileUpdateForm(forms.ModelForm):
 
 # Formulaire de création d'un nouvel utilisateur personnalisé
 class CustomUserCreationForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, required=True, help_text="Entrez votre prénom.")
-    last_name = forms.CharField(max_length=30, required=True, help_text="Entrez votre nom.")
-    email = forms.EmailField(max_length=254, required=True, help_text="Entrez une adresse e-mail valide.")
-    age = forms.IntegerField(required=True, help_text="Entrez votre âge.")
+    first_name = forms.CharField(max_length=30, required=True, help_text="Entrez votre prénom.", label="Prénom")
+    last_name = forms.CharField(max_length=30, required=True, help_text="Entrez votre nom.", label="Nom")
+    email = forms.EmailField(max_length=254, required=True, help_text="Entrez une adresse e-mail valide." , label="E-mail")
+    age = forms.IntegerField(required=True, help_text="Entrez votre âge.", label="Âge")
+    password1 = forms.CharField(
+        label="Mot de passe",
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        help_text="Le mot de passe doit contenir au moins 8 caractères."
+    )
+    password2 = forms.CharField(
+        label="Confirmer le mot de passe",
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
+        strip=False,
+        help_text="Entrez le même mot de passe que ci-dessus, pour vérification."
+    )
+    username=forms.CharField(max_length=30, required=True, help_text="Entrez un nom d'utilisateur.", label="Nom d'utilisateur")
 
     class Meta:
         model = User
