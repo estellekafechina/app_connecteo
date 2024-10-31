@@ -235,17 +235,6 @@ def send_message(request, username):
 
 
 
-
-def confirm_email(request, code):
-    profile = get_object_or_404(Profile, confirmation_code=code)
-    profile.is_confirmed = True
-    profile.confirmation_code = ''
-    profile.save()
-    messages.success(request, "Votre compte a été confirmé avec succès.")
-    return redirect('login')
-
-
-
 @login_required
 def search_view(request):
     query = request.GET.get('q')
