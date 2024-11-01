@@ -101,8 +101,6 @@ def follow_user(request, username):
 
 @login_required
 def profile_update(request):
-    user_form = UserUpdateForm(instance=request.user)
-    profile_form = ProfileUpdateForm(instance=request.user.profile)
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -110,8 +108,8 @@ def profile_update(request):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            return redirect('profile')
-        messages.success(request, 'Les modifications ont été enregistrées avec succès !')
+            messages.success(request, 'Les modifications ont été enregistrées avec succès !')
+            return redirect('profile', username=request.user.username)
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)

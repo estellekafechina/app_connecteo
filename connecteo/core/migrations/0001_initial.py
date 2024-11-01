@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 (
                     "profile_image",
                     models.ImageField(
-                        default="profiles/default.png", upload_to="profiles/"
+                        default="profiles/default_picture.png", upload_to="profiles/"
                     ),
                 ),
                 ("social_links", models.URLField(blank=True, max_length=255)),
